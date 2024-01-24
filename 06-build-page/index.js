@@ -3,11 +3,11 @@ const path = require('path');
 
 async function buildPage() {
   const projectDistPath = path.join(__dirname, 'project-dist');
-  console.log(fs.existsSync(projectDistPath));
-  if (fs.existsSync(projectDistPath)) {
+  try {
+    await fs.promises.access(projectDistPath);
     await removeFolder(projectDistPath);
     buildPage();
-  } else {
+  } catch (error) {
     fs.mkdir(path.join(__dirname, 'project-dist'), (err) => {
       if (err) throw err;
     });

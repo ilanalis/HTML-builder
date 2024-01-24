@@ -4,7 +4,9 @@ const fs = require('fs');
 async function copyDirectory() {
   const initFolderPath = path.join(__dirname, 'files');
   const copyFolderPath = path.join(__dirname, 'files-copy');
-  if (fs.existsSync(copyFolderPath)) {
+
+  try {
+    await fs.access(copyFolderPath);
     fs.readdir(copyFolderPath, (err, files) => {
       if (err) throw err;
       files.forEach((file) => {
@@ -17,7 +19,7 @@ async function copyDirectory() {
         copyDirectory();
       });
     });
-  } else {
+  } catch (error) {
     fs.mkdir(copyFolderPath, (err) => {
       if (err) throw err;
       fs.readdir(initFolderPath, (err, files) => {
